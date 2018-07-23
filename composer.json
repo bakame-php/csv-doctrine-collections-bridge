@@ -1,0 +1,49 @@
+{
+    "name": "bakame/league-csv-criteria-adapter",
+    "type": "library",
+    "description" : "Doctrine criteria adapter to work with league csv",
+    "keywords": [
+        "csv",
+        "collections",
+        "iterator",
+        "array",
+        "criteria"
+    ],
+    "require": {
+        "league/csv": "^9.0",
+        "doctrine/collections": "^1.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "friendsofphp/php-cs-fixer": "^2.0",
+        "phpstan/phpstan": "^0.10.1",
+        "phpstan/phpstan-strict-rules": "^0.10.0",
+        "phpstan/phpstan-phpunit": "^0.10.0"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"Bakame\\Csv\\Adapter\\" : "src"
+    	}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BakameTest\\Csv\\Adapter\\": "tests"
+        }
+    },
+    "scripts": {
+        "phpcs": "php-cs-fixer fix -v --diff --dry-run --allow-risky=yes;",
+        "phpstan-src": "phpstan analyse -l 7 -c phpstan.src.neon src",
+        "phpstan-tests": "phpstan analyse -l 7 -c phpstan.tests.neon tests",
+        "phpstan": [
+            "@phpstan-src",
+            "@phpstan-tests"
+        ],
+        "phpunit": "phpunit --coverage-text",
+        "test": [
+            "@phpunit",
+            "@phpcs",
+            "@phpstan-src",
+            "@phpstan-tests"
+        ]
+    }
+}

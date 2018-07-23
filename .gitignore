@@ -1,0 +1,5 @@
+vendor
+build
+composer.lock
+.idea
+docs/_site
