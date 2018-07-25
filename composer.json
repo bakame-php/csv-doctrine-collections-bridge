@@ -1,13 +1,14 @@
 {
-    "name": "bakame/league-csv-criteria-adapter",
+    "name": "bakame/csv-doctrine-collection-bridge",
     "type": "library",
-    "description" : "Doctrine criteria adapter to work with league csv",
+    "description" : "Csv Doctrine Collection bridge using League\\Csv",
     "keywords": [
         "csv",
         "collections",
         "iterator",
         "array",
-        "criteria"
+        "criteria",
+        "doctrine"
     ],
     "require": {
         "league/csv": "^9.0",
@@ -22,12 +23,12 @@
     },
     "autoload": {
     	"psr-4": {
-    		"Bakame\\Csv\\Adapter\\" : "src"
+    		"Bakame\\Csv\\Doctrine\\Bridge\\" : "src"
     	}
     },
     "autoload-dev": {
         "psr-4": {
-            "BakameTest\\Csv\\Adapter\\": "tests"
+            "BakameTest\\Csv\\Doctrine\\Bridge\\": "tests"
         }
     },
     "scripts": {

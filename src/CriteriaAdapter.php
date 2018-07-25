@@ -1,18 +1,18 @@
 <?php
 
 /**
- * League CSV Doctrine Criteria Adapter (https://github.com/bakame-php/league-csv-criteria-adapter).
+ * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge).
  *
  * @author  Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license https://github.com/bakame-php/league-csv-criteria-adapter/blob/master/LICENSE (MIT License)
+ * @license https://github.com/bakame-php/csv-doctrine-bridge/blob/master/LICENSE (MIT License)
  * @version 1.0.0
- * @link    https://github.com/bakame-php/league-csv-criteria-adapter
+ * @link    https://github.com/bakame-php/csv-doctrine-bridge
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Bakame\Csv\Adapter;
+namespace Bakame\Csv\Doctrine\Bridge;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
@@ -82,9 +82,8 @@ final class CriteriaAdapter
      */
     public static function addOrderBy(Statement $stmt, Criteria $criteria): Statement
     {
-        $orderings = $criteria->getOrderings();
         $next = null;
-        foreach (array_reverse($orderings) as $field => $ordering) {
+        foreach (array_reverse($criteria->getOrderings()) as $field => $ordering) {
             $next = ClosureExpressionVisitor::sortByField($field, $ordering === Criteria::DESC ? -1 : 1, $next);
         }
 
@@ -104,15 +103,8 @@ final class CriteriaAdapter
      */
     public static function addInterval(Statement $stmt, Criteria $criteria): Statement
     {
-        $offset = $criteria->getFirstResult();
-        $length = $criteria->getMaxResults();
-        if (null === $offset) {
-            $offset = 0;
-        }
-
-        if (null === $length) {
-            $length = -1;
-        }
+        $offset = $criteria->getFirstResult() ?? 0;
+        $length = $criteria->getMaxResults() ?? -1;
 
         return $stmt->offset($offset)->limit($length);
     }

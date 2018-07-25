@@ -1,12 +1,18 @@
-League CSV - Doctrine Criteria Adapter
+League CSV - Doctrine Collection Bridge
 =======
 
-This package contains an `Doctrine\Common\Collections\Criteria` adapter for `League\Csv` version 9+. Using the adapter you can use Doctrine semantic to filter CSV records.
+This package contains:
+
+- an `Doctrine\Common\Collections\Criteria` adapter for `League\Csv` version 9+.
+- a `CsvCollection` object which converts a `League\Csv\Reader` object or a `League\Csv\ResultSet` object into a `Doctrine\Common\Collection`
+
+Using the adapter you can use Doctrine semantic to filter CSV records whereas using the CsvCollection you can inject your records into a Doctrine Collection.
 
 ```php
 <?php
 
-use Bakame\Csv\Adapter\CriteriaAdapter;
+use Bakame\Csv\Doctrine\Bridge\CriteriaAdapter;
+use Bakame\Csv\Doctrine\Bridge\CsvCollection;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
 
@@ -23,6 +29,7 @@ $criteria = Criteria::create()
 
 $adapter = new CriteriaAdapter($criteria);
 $result = $adapter->process($csv);
+$collection = new CsvCollection($adapter->process($csv));
 ```
 
 System Requirements
@@ -36,27 +43,42 @@ Installation
 --------
 
 ```bash
-$ composer require bakame/league-csv-criteria-adapter
+$ composer require bakame/league-csv-doctrine-bridge
 ```
-
-FAQ
----------
-
-Why create a standalone package for a single class ?
-
-- Because we don't want `League\Csv` to depend on another PHP package.
-
-Why not make `League\Csv` returns a `Doctrine` collections then ?
-
-- Same answer. And also Doctrine collections out of the box works mainly with `array` while `League\Csv` heavily uses `Iterator` objects.
 
 Documentation
 --------
 
+### CsvCollection
+
+The `Bakame\Csv\Doctrine\Bridge\CsvCollection` class extends `Doctrine\Common\Collections\AbstractLazyCollection` to inject all the records from a `League\Csv\Reader` or a `League\Csv\ResultSet` into a Doctrine Collection object.
+
+```php
+
+use Bakame\Csv\Doctrine\Bridge\CsvCollection;
+use League\Csv\Reader;
+
+$csv = Reader::createFromPath('/path/to/my/file.csv');
+$csv->setHeaderOffset(0);
+$csv->setDelimiter(';');
+
+$collection = new CsvCollection($csv);
+
+$stmt = (new Statement())
+    ->setOffset(10)
+    ->limit(10)
+;
+
+$collection = new CsvCollection($stmt->process($csv));
+```
+The return `CsvCollection` implements `Doctrine\Common\Collections\Collection` interface.
+
+### CriteriaAdapter
+
 ```php
 <?php
 
-namespace Bakame\Csv\Adapter;
+namespace Bakame\Csv\Doctrine\Bridge;
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;

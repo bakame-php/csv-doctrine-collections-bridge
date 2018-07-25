@@ -1,12 +1,12 @@
 <?php
 
 $header = <<<EOF
-League CSV Doctrine Criteria Adapter (https://github.com/bakame-php/league-csv-criteria-adapter)
+League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge)
 
 @author  Ignace Nyamagana Butera <nyamsprod@gmail.com>
-@license https://github.com/bakame-php/league-csv-criteria-adapter/blob/master/LICENSE (MIT License)
+@license https://github.com/bakame-php/csv-doctrine-bridge/blob/master/LICENSE (MIT License)
 @version 1.0.0
-@link    https://github.com/bakame-php/league-csv-criteria-adapter
+@link    https://github.com/bakame-php/csv-doctrine-bridge
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
