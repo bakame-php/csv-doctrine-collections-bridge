@@ -2,5 +2,5 @@ includes:
 - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     ignoreErrors:
-        - '#Method Bakame\\Csv\\Doctrine\\Bridge\\CsvCollection::filterInput\(\) has parameter \$input with no typehint specified.#'
+        - '#Method Bakame\\Csv\\Doctrine\\Bridge\\Collection::filterInput\(\) has parameter \$input with no typehint specified.#'
     reportUnmatchedIgnoredErrors: true

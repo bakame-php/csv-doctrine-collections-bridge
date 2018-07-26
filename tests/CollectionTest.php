@@ -15,16 +15,16 @@
 namespace BakameTest\Csv\Doctrine\Bridge;
 
 use ArrayAccess;
-use Bakame\Csv\Doctrine\Bridge\CsvCollection;
+use Bakame\Csv\Doctrine\Bridge\Collection;
 use Countable;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use IteratorAggregate;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class CsvCollectionTest extends TestCase
+class CollectionTest extends TestCase
 {
     protected $csv;
 
@@ -37,8 +37,8 @@ class CsvCollectionTest extends TestCase
 
     public function testConstructorWithReader()
     {
-        $collection = new CsvCollection($this->csv);
-        self::assertInstanceOf(Collection::class, $collection);
+        $collection = new Collection($this->csv);
+        self::assertInstanceOf(DoctrineCollection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
@@ -51,8 +51,8 @@ class CsvCollectionTest extends TestCase
             ->limit(15)
         ;
         $result = $stmt->process($this->csv);
-        $collection = new CsvCollection($result);
-        self::assertInstanceOf(Collection::class, $collection);
+        $collection = new Collection($result);
+        self::assertInstanceOf(DoctrineCollection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
@@ -61,7 +61,7 @@ class CsvCollectionTest extends TestCase
     public function testConstructorThrowsTypeError()
     {
         self::expectException(TypeError::class);
-        new CsvCollection([]);
+        new Collection([]);
     }
 
     public function testDoInitialize()
@@ -72,7 +72,7 @@ class CsvCollectionTest extends TestCase
         ;
         $result = $stmt->process($this->csv);
 
-        $collection = new CsvCollection($result);
+        $collection = new Collection($result);
         self::assertCount(15, $collection);
     }
 }

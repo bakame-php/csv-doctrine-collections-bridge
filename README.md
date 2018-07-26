@@ -4,15 +4,15 @@ League CSV - Doctrine Collection Bridge
 This package contains:
 
 - an `Doctrine\Common\Collections\Criteria` adapter for `League\Csv` version 9+.
-- a `CsvCollection` object which converts a `League\Csv\Reader` object or a `League\Csv\ResultSet` object into a `Doctrine\Common\Collection`
+- a `Collection` object which converts a `League\Csv\Reader` object or a `League\Csv\ResultSet` object into a `Doctrine\Common\Collection`
 
-Using the adapter you can use Doctrine semantic to filter CSV records whereas using the CsvCollection you can inject your records into a Doctrine Collection.
+Using the adapter you can use Doctrine semantic to filter CSV records whereas using the Collection you can inject your records into a Doctrine Collection.
 
 ```php
 <?php
 
+use Bakame\Csv\Doctrine\Bridge\Collection;
 use Bakame\Csv\Doctrine\Bridge\CriteriaAdapter;
-use Bakame\Csv\Doctrine\Bridge\CsvCollection;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
 
@@ -29,7 +29,7 @@ $criteria = Criteria::create()
 
 $adapter = new CriteriaAdapter($criteria);
 $result = $adapter->process($csv);
-$collection = new CsvCollection($adapter->process($csv));
+$collection = new Collection($adapter->process($csv));
 ```
 
 System Requirements
@@ -49,29 +49,29 @@ $ composer require bakame/league-csv-doctrine-bridge
 Documentation
 --------
 
-### CsvCollection
+### Collection
 
-The `Bakame\Csv\Doctrine\Bridge\CsvCollection` class extends `Doctrine\Common\Collections\AbstractLazyCollection` to inject all the records from a `League\Csv\Reader` or a `League\Csv\ResultSet` into a Doctrine Collection object.
+The `Bakame\Csv\Doctrine\Bridge\Collection` class extends `Doctrine\Common\Collections\AbstractLazyCollection` to inject all the records from a `League\Csv\Reader` or a `League\Csv\ResultSet` into a Doctrine Collection object.
 
 ```php
 
-use Bakame\Csv\Doctrine\Bridge\CsvCollection;
+use Bakame\Csv\Doctrine\Bridge\Collection;
 use League\Csv\Reader;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
 $csv->setDelimiter(';');
 
-$collection = new CsvCollection($csv);
+$collection = new Collection($csv);
 
 $stmt = (new Statement())
     ->setOffset(10)
     ->limit(10)
 ;
 
-$collection = new CsvCollection($stmt->process($csv));
+$collection = new Collection($stmt->process($csv));
 ```
-The return `CsvCollection` implements `Doctrine\Common\Collections\Collection` interface.
+The return `Collection` implements `Doctrine\Common\Collections\Collection` interface.
 
 ### CriteriaAdapter
 
@@ -87,9 +87,9 @@ use League\Csv\Statement;
 
 final class CriteriaAdapter
 {
-    public function __construct(Criteria $criteria = null);
+    public function __construct(Criteria $criteria = null)
     public function getStatement(): Statement
-    public function process(Reader $reader): ResultSet
+    public function process(Reader $reader, array $header = []): ResultSet
     public static function addWhere(Statement $stmt, Criteria $criteria): Statement
     public static function addOrderBy(Statement $stmt, Criteria $criteria): Statement
     public static function addInterval(Statement $stmt, Criteria $criteria): Statement
@@ -100,6 +100,7 @@ final class CriteriaAdapter
 - `CriteriaAdapter::addWhere` returns a new instance of the submitted `League\Csv\Statement` with the  `Criteria::getWhereExpression` filters attached to it.
 - `CriteriaAdapter::addOrderBy` returns a new instance of the submitted `League\Csv\Statement` with the  `Criteria::getOrderings` filters attached to it.
 - `CriteriaAdapter::addInterval` returns a new instance of the submitted `League\Csv\Statement` with `Criteria::getFirstResult` and `Criteria::getMaxResults` attached to it.
+- `CriteriaAdapter::process` filters a `League\Csv\Reader` object using the current `Criteria` object and returns a `League\Csv\ResultSet`.
 
 **WARNING: While the `Doctrine\Common\Collections\Criteria` object is mutable the `League\Csv\Statement` object is immutable. So calling multiple time the `CriteriaAdapter::process` method while changing the `Criteria` state may result in different `ResultSet` with the same CSV document.**
 

@@ -25,7 +25,7 @@ use function is_object;
 use function iterator_to_array;
 use function sprintf;
 
-final class CsvCollection extends AbstractLazyCollection
+final class Collection extends AbstractLazyCollection
 {
     /**
      * @var Reader|ResultSet

@@ -41,9 +41,9 @@ final class CriteriaAdapter
     /**
      * Process a Reader object using the current criteria object.
      */
-    public function process(Reader $reader): ResultSet
+    public function process(Reader $reader, array $header = []): ResultSet
     {
-        return $this->getStatement()->process($reader);
+        return $this->getStatement()->process($reader, $header);
     }
 
     /**
