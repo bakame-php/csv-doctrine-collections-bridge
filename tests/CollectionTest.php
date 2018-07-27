@@ -18,6 +18,8 @@ use ArrayAccess;
 use Bakame\Csv\Doctrine\Bridge\Collection;
 use Countable;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use IteratorAggregate;
 use League\Csv\Reader;
 use League\Csv\Statement;
@@ -42,6 +44,7 @@ class CollectionTest extends TestCase
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
+        self::assertInstanceOf(Selectable::class, $collection);
     }
 
     public function testConstructorWithResultSet()
@@ -56,6 +59,7 @@ class CollectionTest extends TestCase
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
+        self::assertInstanceOf(Selectable::class, $collection);
     }
 
     public function testConstructorThrowsTypeError()
@@ -74,5 +78,22 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($result);
         self::assertCount(15, $collection);
+    }
+
+    public function testMatching()
+    {
+        $fp = tmpfile();
+        fputcsv($fp, ['foo', 'bar', 'baz']);
+        fputcsv($fp, ['foofoo', 'barbar', 'bazbaz']);
+        $csv = Reader::createFromStream($fp);
+        $collection = new Collection($csv);
+
+        self::assertSame([
+            ['foo', 'bar', 'baz'],
+            ['foofoo', 'barbar', 'bazbaz'],
+        ], $collection->matching(new Criteria(null, [0 => Criteria::ASC]))->toArray());
+
+        $csv = null;
+        fclose($fp);
     }
 }

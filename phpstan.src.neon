@@ -3,4 +3,5 @@ includes:
 parameters:
     ignoreErrors:
         - '#Method Bakame\\Csv\\Doctrine\\Bridge\\Collection::filterInput\(\) has parameter \$input with no typehint specified.#'
+        - '#Call to an undefined method Doctrine\\Common\\Collections\\Collection::matching\(\).#'
     reportUnmatchedIgnoredErrors: true

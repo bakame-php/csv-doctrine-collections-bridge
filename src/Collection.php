@@ -16,6 +16,8 @@ namespace Bakame\Csv\Doctrine\Bridge;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use League\Csv\Reader;
 use League\Csv\ResultSet;
 use TypeError;
@@ -25,7 +27,7 @@ use function is_object;
 use function iterator_to_array;
 use function sprintf;
 
-final class Collection extends AbstractLazyCollection
+final class Collection extends AbstractLazyCollection implements Selectable
 {
     /**
      * @var Reader|ResultSet
@@ -71,5 +73,15 @@ final class Collection extends AbstractLazyCollection
     protected function doInitialize(): void
     {
         $this->collection = new ArrayCollection(iterator_to_array($this->csv, true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function matching(Criteria $criteria)
+    {
+        $this->initialize();
+
+        return $this->collection->matching($criteria);
     }
 }

@@ -1,12 +1,7 @@
 League CSV - Doctrine Collection Bridge
 =======
 
-This package contains:
-
-- an `Doctrine\Common\Collections\Criteria` adapter for `League\Csv` version 9+.
-- a `Collection` object which converts a `League\Csv\Reader` object or a `League\Csv\ResultSet` object into a `Doctrine\Common\Collection`
-
-Using the adapter you can use Doctrine semantic to filter CSV records whereas using the Collection you can inject your records into a Doctrine Collection.
+This package contains classes to convert [League Csv](https://csv.thephpleague.com) objects into [Doctrine Collections](https://www.doctrine-project.org/projects/collections.html) objects.
 
 ```php
 <?php
@@ -27,9 +22,16 @@ $criteria = Criteria::create()
     ->setMaxResults(10)
 ;
 
+//you can do
+
 $adapter = new CriteriaAdapter($criteria);
-$result = $adapter->process($csv);
-$collection = new Collection($adapter->process($csv));
+$resultset = $adapter->process($csv);
+$result = new Collection($resultset);
+
+//or
+
+$collection = new Collection($csv);
+$result = $collection->matching($criteria);
 ```
 
 System Requirements
@@ -46,14 +48,13 @@ Installation
 $ composer require bakame/league-csv-doctrine-bridge
 ```
 
-Documentation
+Usage
 --------
 
-### Collection
-
-The `Bakame\Csv\Doctrine\Bridge\Collection` class extends `Doctrine\Common\Collections\AbstractLazyCollection` to inject all the records from a `League\Csv\Reader` or a `League\Csv\ResultSet` into a Doctrine Collection object.
+### Converting a `League\Csv\Reader` into a Doctrine Collection object.
 
 ```php
+<?php
 
 use Bakame\Csv\Doctrine\Bridge\Collection;
 use League\Csv\Reader;
@@ -63,46 +64,77 @@ $csv->setHeaderOffset(0);
 $csv->setDelimiter(';');
 
 $collection = new Collection($csv);
-
-$stmt = (new Statement())
-    ->setOffset(10)
-    ->limit(10)
-;
-
-$collection = new Collection($stmt->process($csv));
 ```
-The return `Collection` implements `Doctrine\Common\Collections\Collection` interface.
 
-### CriteriaAdapter
+### Converting a `League\Csv\ResultSet` into a Doctrine Collection object.
 
 ```php
 <?php
 
-namespace Bakame\Csv\Doctrine\Bridge;
+$csv = Reader::createFromPath('/path/to/my/file.csv');
+$csv->setHeaderOffset(0);
+$csv->setDelimiter(';');
+
+$stmt = (new Statement())
+    ->where(function (array $row) {
+        return isset($row['email'])
+            && false !== strpos($row['email'], '@github.com');
+    });
+
+$collection = new Collection($stmt->process($csv));
+```
+
+### Using Doctrine Criteria to filter a `League\Csv\Reader` object
+
+```php
+<?php
+
+use Bakame\Csv\Doctrine\Bridge\CriteriaAdapter;
+use Doctrine\Common\Collections\Criteria;
+use League\Csv\Reader;
+
+$csv = Reader::createFromPath('/path/to/my/file.csv');
+$csv->setHeaderOffset(0);
+$csv->setDelimiter(';');
+
+$criteria = Criteria::create()
+    ->andWhere(Criteria::expr()->eq('name', 'Adam'))
+    ->orderBy(['years', 'ASC'])
+    ->setFirstResult(0)
+    ->setMaxResults(10)
+;
+
+$adapter = new CriteriaAdapter($criteria);
+$resultset = $adapter->process($csv);
+```
+
+### CriteriaAdapter advanced usages
+
+```php
+<?php
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
 use League\Csv\ResultSet;
 use League\Csv\Statement;
 
-final class CriteriaAdapter
-{
-    public function __construct(Criteria $criteria = null)
-    public function getStatement(): Statement
-    public function process(Reader $reader, array $header = []): ResultSet
-    public static function addWhere(Statement $stmt, Criteria $criteria): Statement
-    public static function addOrderBy(Statement $stmt, Criteria $criteria): Statement
-    public static function addInterval(Statement $stmt, Criteria $criteria): Statement
-}
+public CriteriaAdapter::getStatement(): Statement
+public CriteriaAdapter::process(Reader $reader, array $header = []): ResultSet
+public static CriteriaAdapter::addWhere(Statement $stmt, Criteria $criteria): Statement
+public static CriteriaAdapter::addOrderBy(Statement $stmt, Criteria $criteria): Statement
+public static CriteriaAdapter::addInterval(Statement $stmt, Criteria $criteria): Statement
 ```
 
-- `CriteriaAdapter::getStatement` converts the current `Criteria` object into a `League\Csv\Statement` object.
-- `CriteriaAdapter::addWhere` returns a new instance of the submitted `League\Csv\Statement` with the  `Criteria::getWhereExpression` filters attached to it.
-- `CriteriaAdapter::addOrderBy` returns a new instance of the submitted `League\Csv\Statement` with the  `Criteria::getOrderings` filters attached to it.
-- `CriteriaAdapter::addInterval` returns a new instance of the submitted `League\Csv\Statement` with `Criteria::getFirstResult` and `Criteria::getMaxResults` attached to it.
-- `CriteriaAdapter::process` filters a `League\Csv\Reader` object using the current `Criteria` object and returns a `League\Csv\ResultSet`.
+- `CriteriaAdapter::getStatement` converts the current `Criteria` object into a `Statement` object.
+- `CriteriaAdapter::process` filters a `Reader` object using the current `Criteria` object and returns a `ResultSet`.
+- `CriteriaAdapter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
+- `CriteriaAdapter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
+- `CriteriaAdapter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
 
-**WARNING: While the `Doctrine\Common\Collections\Criteria` object is mutable the `League\Csv\Statement` object is immutable. So calling multiple time the `CriteriaAdapter::process` method while changing the `Criteria` state may result in different `ResultSet` with the same CSV document.**
+**WARNING: While the `Criteria` object is mutable the `Statement` object is immutable.**
+
+- All returned `Statement` objects are new instances;
+- Calling multiple times the `CriteriaAdapter::process` method while changing the `Criteria` state may result in different `ResultSet` with the same CSV document;
 
 Contributing
 -------
