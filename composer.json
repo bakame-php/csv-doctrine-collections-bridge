@@ -24,7 +24,8 @@
     "autoload": {
     	"psr-4": {
     		"Bakame\\Csv\\Doctrine\\Bridge\\" : "src"
-    	}
+    	},
+        "files": ["src/functions_include.php"]
     },
     "autoload-dev": {
         "psr-4": {

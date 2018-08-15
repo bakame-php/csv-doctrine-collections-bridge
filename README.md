@@ -7,9 +7,9 @@ This package contains classes to convert [League Csv](https://csv.thephpleague.c
 <?php
 
 use Bakame\Csv\Doctrine\Bridge\Collection;
-use Bakame\Csv\Doctrine\Bridge\CriteriaAdapter;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
+use function Bakame\Csv\Doctrine\Bridge\convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -24,8 +24,7 @@ $criteria = Criteria::create()
 
 //you can do
 
-$adapter = new CriteriaAdapter($criteria);
-$resultset = $adapter->process($csv);
+$resultset = convert($criteria)->process($csv);
 $result = new Collection($resultset);
 
 //or
@@ -86,12 +85,14 @@ $collection = new Collection($stmt->process($csv));
 
 ### Using Doctrine Criteria to filter a `League\Csv\Reader` object
 
+You can simply use the provided `Bakame\Csv\Doctrine\Bridge\convert` function to convert a `Doctrine\Common\Collections\Criteria` object into a `League\Csv\Statement` one.
+
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Bridge\CriteriaAdapter;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
+use function Bakame\Csv\Doctrine\Bridge\convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -104,29 +105,27 @@ $criteria = Criteria::create()
     ->setMaxResults(10)
 ;
 
-$adapter = new CriteriaAdapter($criteria);
-$resultset = $adapter->process($csv);
+$stmt = convert($criteria);
+$resultset = $stmt->process($csv);
 ```
 
 ### CriteriaAdapter advanced usages
+
+The `Bakame\Csv\Doctrine\Bridge\convert` function is an alias of the `CriteriaAdapter::convert` method.
 
 ```php
 <?php
 
 use Doctrine\Common\Collections\Criteria;
-use League\Csv\Reader;
-use League\Csv\ResultSet;
 use League\Csv\Statement;
 
-public CriteriaAdapter::getStatement(): Statement
-public CriteriaAdapter::process(Reader $reader, array $header = []): ResultSet
-public static CriteriaAdapter::addWhere(Statement $stmt, Criteria $criteria): Statement
-public static CriteriaAdapter::addOrderBy(Statement $stmt, Criteria $criteria): Statement
-public static CriteriaAdapter::addInterval(Statement $stmt, Criteria $criteria): Statement
+public static CriteriaAdapter::convert(Criteria $criteria, ?Statement $stmt = null): Statement
+public static CriteriaAdapter::addWhere(Criteria $criteria, Statement $stmt): Statement
+public static CriteriaAdapter::addOrderBy(Criteria $criteria, Statement $stmt): Statement
+public static CriteriaAdapter::addInterval(Criteria $criteria, Statement $stmt): Statement
 ```
 
-- `CriteriaAdapter::getStatement` converts the current `Criteria` object into a `Statement` object.
-- `CriteriaAdapter::process` filters a `Reader` object using the current `Criteria` object and returns a `ResultSet`.
+- `CriteriaAdapter::convert` converts the `Criteria` object into a `Statement` object.
 - `CriteriaAdapter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
 - `CriteriaAdapter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
 - `CriteriaAdapter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
@@ -134,7 +133,6 @@ public static CriteriaAdapter::addInterval(Statement $stmt, Criteria $criteria):
 **WARNING: While the `Criteria` object is mutable the `Statement` object is immutable.**
 
 - All returned `Statement` objects are new instances;
-- Calling multiple times the `CriteriaAdapter::process` method while changing the `Criteria` state may result in different `ResultSet` with the same CSV document;
 
 Contributing
 -------

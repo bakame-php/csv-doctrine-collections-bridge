@@ -16,44 +16,20 @@ namespace Bakame\Csv\Doctrine\Bridge;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
-use League\Csv\Reader;
-use League\Csv\ResultSet;
 use League\Csv\Statement;
 use function array_reverse;
 
 final class CriteriaAdapter
 {
     /**
-     * @var Criteria
-     */
-    private $criteria;
-
-    /**
-     * New instance.
-     *
-     * @param null|Criteria $criteria
-     */
-    public function __construct(Criteria $criteria = null)
-    {
-        $this->criteria = $criteria ?? new Criteria();
-    }
-
-    /**
-     * Process a Reader object using the current criteria object.
-     */
-    public function process(Reader $reader, array $header = []): ResultSet
-    {
-        return $this->getStatement()->process($reader, $header);
-    }
-
-    /**
      * Returns the Statement object created from the current Criteria object.
+     * @param null|Statement $stmt
      */
-    public function getStatement(): Statement
+    public static function convert(Criteria $criteria, Statement $stmt = null): Statement
     {
-        $stmt = self::addWhere(new Statement(), $this->criteria);
-        $stmt = self::addOrderBy($stmt, $this->criteria);
-        $stmt = self::addInterval($stmt, $this->criteria);
+        $stmt = self::addWhere($criteria, $stmt ?? new Statement());
+        $stmt = self::addOrderBy($criteria, $stmt);
+        $stmt = self::addInterval($criteria, $stmt);
 
         return $stmt;
     }
@@ -64,7 +40,7 @@ final class CriteriaAdapter
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getWhereExpression filter.
      */
-    public static function addWhere(Statement $stmt, Criteria $criteria): Statement
+    public static function addWhere(Criteria $criteria, Statement $stmt): Statement
     {
         $expr = $criteria->getWhereExpression();
         if (null === $expr) {
@@ -80,7 +56,7 @@ final class CriteriaAdapter
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getOrderings filter.
      */
-    public static function addOrderBy(Statement $stmt, Criteria $criteria): Statement
+    public static function addOrderBy(Criteria $criteria, Statement $stmt): Statement
     {
         $next = null;
         foreach (array_reverse($criteria->getOrderings()) as $field => $ordering) {
@@ -101,7 +77,7 @@ final class CriteriaAdapter
      * an new Statement instance with the added Criteria::getFirstResult
      * and Criteria::getMaxResults filters paramters.
      */
-    public static function addInterval(Statement $stmt, Criteria $criteria): Statement
+    public static function addInterval(Criteria $criteria, Statement $stmt): Statement
     {
         $offset = $criteria->getFirstResult() ?? 0;
         $length = $criteria->getMaxResults() ?? -1;
