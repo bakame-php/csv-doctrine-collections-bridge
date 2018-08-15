@@ -22,11 +22,11 @@ use League\Csv\Statement;
 /**
  * Returns the Statement object created from the current Criteria object.
  *
- * @see CriteriaAdapter::convert
+ * @see Converter::convert
  *
  * @param null|Statement $stmt
  */
 function convert(Criteria $criteria, Statement $stmt = null): Statement
 {
-    return CriteriaAdapter::convert($criteria, $stmt);
+    return Converter::convert($criteria, $stmt);
 }

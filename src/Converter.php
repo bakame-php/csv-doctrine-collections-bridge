@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 use League\Csv\Statement;
 use function array_reverse;
 
-final class CriteriaAdapter
+final class Converter
 {
     /**
      * Returns the Statement object created from the current Criteria object.

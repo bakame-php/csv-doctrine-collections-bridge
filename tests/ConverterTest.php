@@ -21,7 +21,7 @@ use League\Csv\ResultSet;
 use PHPUnit\Framework\TestCase;
 use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
 
-class CriteriaAdapterTest extends TestCase
+class ConverterTest extends TestCase
 {
     protected $csv;
 

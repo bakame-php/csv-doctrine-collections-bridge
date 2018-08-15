@@ -109,9 +109,9 @@ $stmt = convert($criteria);
 $resultset = $stmt->process($csv);
 ```
 
-### CriteriaAdapter advanced usages
+### Converter advanced usages
 
-The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the `CriteriaAdapter::convert` method.
+The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the `Converter::convert` method.
 
 ```php
 <?php
@@ -119,16 +119,16 @@ The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Statement;
 
-public static CriteriaAdapter::convert(Criteria $criteria, ?Statement $stmt = null): Statement
-public static CriteriaAdapter::addWhere(Criteria $criteria, Statement $stmt): Statement
-public static CriteriaAdapter::addOrderBy(Criteria $criteria, Statement $stmt): Statement
-public static CriteriaAdapter::addInterval(Criteria $criteria, Statement $stmt): Statement
+public static Converter::convert(Criteria $criteria, ?Statement $stmt = null): Statement
+public static Converter::addWhere(Criteria $criteria, Statement $stmt): Statement
+public static Converter::addOrderBy(Criteria $criteria, Statement $stmt): Statement
+public static Converter::addInterval(Criteria $criteria, Statement $stmt): Statement
 ```
 
-- `CriteriaAdapter::convert` converts the `Criteria` object into a `Statement` object.
-- `CriteriaAdapter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
-- `CriteriaAdapter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
-- `CriteriaAdapter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
+- `Converter::convert` converts the `Criteria` object into a `Statement` object.
+- `Converter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
+- `Converter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
+- `Converter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
 
 **WARNING: While the `Criteria` object is mutable the `Statement` object is immutable.**
 
