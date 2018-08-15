@@ -130,9 +130,7 @@ public static Converter::addInterval(Criteria $criteria, Statement $stmt = null)
 - `Converter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
 - `Converter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
 
-**WARNING: While the `Criteria` object is mutable the `Statement` object is immutable.**
-
-- All returned `Statement` objects are new instances;
+**WARNING: While the `Criteria` object is mutable the `Statement` object is immutable. All returned `Statement` objects are new instances**
 
 Contributing
 -------
