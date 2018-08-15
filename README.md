@@ -1,6 +1,10 @@
 League CSV - Doctrine Collection Bridge
 =======
 
+[![Latest Version](https://img.shields.io/github/release/bakame-php/csv-doctrine-collections-bridge.svg?style=flat-square)](https://github.com/bakame-php/csv-doctrine-collections-bridge/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://travis-ci.org/bakame-php/csv-doctrine-bridge.svg?branch=master)](https://travis-ci.org/bakame-php/csv-doctrine-bridge)
+
 This package contains classes to convert [League Csv](https://csv.thephpleague.com) objects into [Doctrine Collections](https://www.doctrine-project.org/projects/collections.html) objects.
 
 ```php
