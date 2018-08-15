@@ -2,6 +2,6 @@ includes:
 - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     ignoreErrors:
-        - '#Method Bakame\\Csv\\Doctrine\\Collection\\Bridge\\Collection::filterInput\(\) has parameter \$input with no typehint specified.#'
+        - '#Method Bakame\\Csv\\Doctrine\\Collection\\Bridge\\Records::filterInput\(\) has parameter \$input with no typehint specified.#'
         - '#Call to an undefined method Doctrine\\Common\\Collections\\Collection::matching\(\).#'
     reportUnmatchedIgnoredErrors: true

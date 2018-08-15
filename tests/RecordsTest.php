@@ -15,9 +15,9 @@
 namespace BakameTest\Csv\Doctrine\Bridge;
 
 use ArrayAccess;
-use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Records;
 use Countable;
-use Doctrine\Common\Collections\Collection as DoctrineCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use IteratorAggregate;
@@ -26,7 +26,7 @@ use League\Csv\Statement;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class CollectionTest extends TestCase
+class RecordsTest extends TestCase
 {
     protected $csv;
 
@@ -39,8 +39,8 @@ class CollectionTest extends TestCase
 
     public function testConstructorWithReader()
     {
-        $collection = new Collection($this->csv);
-        self::assertInstanceOf(DoctrineCollection::class, $collection);
+        $collection = new Records($this->csv);
+        self::assertInstanceOf(Collection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
@@ -54,8 +54,8 @@ class CollectionTest extends TestCase
             ->limit(15)
         ;
         $result = $stmt->process($this->csv);
-        $collection = new Collection($result);
-        self::assertInstanceOf(DoctrineCollection::class, $collection);
+        $collection = new Records($result);
+        self::assertInstanceOf(Collection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
         self::assertInstanceOf(ArrayAccess::class, $collection);
@@ -65,7 +65,7 @@ class CollectionTest extends TestCase
     public function testConstructorThrowsTypeError()
     {
         self::expectException(TypeError::class);
-        new Collection([]);
+        new Records([]);
     }
 
     public function testDoInitialize()
@@ -76,7 +76,7 @@ class CollectionTest extends TestCase
         ;
         $result = $stmt->process($this->csv);
 
-        $collection = new Collection($result);
+        $collection = new Records($result);
         self::assertCount(15, $collection);
     }
 
@@ -86,7 +86,7 @@ class CollectionTest extends TestCase
         fputcsv($fp, ['foo', 'bar', 'baz']);
         fputcsv($fp, ['foofoo', 'barbar', 'bazbaz']);
         $csv = Reader::createFromStream($fp);
-        $collection = new Collection($csv);
+        $collection = new Records($csv);
 
         self::assertSame([
             ['foo', 'bar', 'baz'],

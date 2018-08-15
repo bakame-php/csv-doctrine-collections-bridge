@@ -27,7 +27,7 @@ use function is_object;
 use function iterator_to_array;
 use function sprintf;
 
-final class Collection extends AbstractLazyCollection implements Selectable
+final class Records extends AbstractLazyCollection implements Selectable
 {
     /**
      * @var Reader|ResultSet

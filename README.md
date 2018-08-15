@@ -6,7 +6,7 @@ This package contains classes to convert [League Csv](https://csv.thephpleague.c
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Records;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
 use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
@@ -25,11 +25,11 @@ $criteria = Criteria::create()
 //you can do
 
 $resultset = convert($criteria)->process($csv);
-$result = new Collection($resultset);
+$result = new Records($resultset);
 
 //or
 
-$collection = new Collection($csv);
+$collection = new Records($csv);
 $result = $collection->matching($criteria);
 ```
 
@@ -55,14 +55,14 @@ Usage
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Records;
 use League\Csv\Reader;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
 $csv->setDelimiter(';');
 
-$collection = new Collection($csv);
+$collection = new Records($csv);
 ```
 
 ### Converting a `League\Csv\ResultSet` into a Doctrine Collection object.
@@ -80,7 +80,7 @@ $stmt = (new Statement())
             && false !== strpos($row['email'], '@github.com');
     });
 
-$collection = new Collection($stmt->process($csv));
+$collection = new Records($stmt->process($csv));
 ```
 
 ### Using Doctrine Criteria to filter a `League\Csv\Reader` object
