@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bakame\Csv\Doctrine\Collection\Bridge;
+namespace Bakame\Csv\Extension;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +26,7 @@ use function gettype;
 use function is_object;
 use function sprintf;
 
-final class Records extends AbstractLazyCollection implements Selectable
+final class RecordCollection extends AbstractLazyCollection implements Selectable
 {
     /**
      * @var Reader|ResultSet

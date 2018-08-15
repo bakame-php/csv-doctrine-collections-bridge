@@ -11,6 +11,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-if (!function_exists('Bakame\Csv\Doctrine\Collection\Bridge\convert')) {
+if (!function_exists('Bakame\Csv\Extension\criteria_convert')) {
     require __DIR__.'/functions.php';
 }

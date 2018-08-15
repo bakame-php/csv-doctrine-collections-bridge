@@ -3,5 +3,5 @@ includes:
 - vendor/phpstan/phpstan-phpunit/rules.neon
 parameters:
     ignoreErrors:
-        -'#Parameter \#1 $csv of class Bakame\\Csv\\Doctrine\\Bridge\\Records constructor expects League\\Csv\\Reader|League\\Csv\\ResultSet, array given.#'
+        -'#Parameter \#1 $csv of class Bakame\\Csv\\Extension\\RecordCollection constructor expects League\\Csv\\Reader|League\\Csv\\ResultSet, array given.#'
     reportUnmatchedIgnoredErrors: true

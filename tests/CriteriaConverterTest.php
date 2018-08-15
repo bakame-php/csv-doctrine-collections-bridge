@@ -12,16 +12,16 @@
  * file that was distributed with this source code.
  */
 
-namespace BakameTest\Csv\Doctrine\Bridge;
+namespace BakameTest\Csv\Extension;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use League\Csv\Reader;
 use League\Csv\ResultSet;
 use PHPUnit\Framework\TestCase;
-use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
+use function Bakame\Csv\Extension\criteria_convert;
 
-class ConverterTest extends TestCase
+class CriteriaConverterTest extends TestCase
 {
     protected $csv;
 
@@ -37,7 +37,7 @@ class ConverterTest extends TestCase
         $expr = new Comparison('prenoms', '=', 'Adam');
         $criteria = new Criteria($expr, ['annee' => 'ASC'], 0, 5);
 
-        $records = convert($criteria)->process($this->csv);
+        $records = criteria_convert($criteria)->process($this->csv);
         self::assertInstanceOf(ResultSet::class, $records);
         self::assertTrue(count($records) <= 5);
     }
@@ -45,7 +45,7 @@ class ConverterTest extends TestCase
     public function testAdapterWithoutExpression()
     {
         $criteria = new Criteria(null, ['annee' => 'ASC'], 0, 5);
-        $records = convert($criteria)->process($this->csv);
+        $records = criteria_convert($criteria)->process($this->csv);
         self::assertInstanceOf(ResultSet::class, $records);
         self::assertCount(5, $records);
     }
@@ -53,7 +53,7 @@ class ConverterTest extends TestCase
     public function testAdapterWithoutOrdering()
     {
         $criteria = new Criteria(new Comparison('prenoms', '=', 'Adam'));
-        $records = convert($criteria)->process($this->csv);
+        $records = criteria_convert($criteria)->process($this->csv);
         self::assertInstanceOf(ResultSet::class, $records);
     }
 
@@ -62,13 +62,13 @@ class ConverterTest extends TestCase
         $expr = new Comparison('prenoms', '=', 'Adam');
         $criteria = new Criteria($expr, ['annee' => 'ASC']);
 
-        $records = convert($criteria)->process($this->csv);
+        $records = criteria_convert($criteria)->process($this->csv);
         self::assertInstanceOf(ResultSet::class, $records);
     }
 
     public function testAdapterWithEmptyCriteria()
     {
-        $records = convert(new Criteria())->process($this->csv);
+        $records = criteria_convert(new Criteria())->process($this->csv);
         self::assertInstanceOf(ResultSet::class, $records);
     }
 }

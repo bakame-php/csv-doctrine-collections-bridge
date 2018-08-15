@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Bakame\Csv\Doctrine\Collection\Bridge;
+namespace Bakame\Csv\Extension;
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Statement;
@@ -22,11 +22,11 @@ use League\Csv\Statement;
 /**
  * Returns the Statement object created from the current Criteria object.
  *
- * @see Converter::convert
+ * @see CriteriaConverter::convert
  *
  * @param null|Statement $stmt
  */
-function convert(Criteria $criteria, Statement $stmt = null): Statement
+function criteria_convert(Criteria $criteria, Statement $stmt = null): Statement
 {
-    return Converter::convert($criteria, $stmt);
+    return CriteriaConverter::convert($criteria, $stmt);
 }

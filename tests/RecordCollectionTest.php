@@ -12,10 +12,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BakameTest\Csv\Doctrine\Bridge;
+namespace BakameTest\Csv\Extension;
 
 use ArrayAccess;
-use Bakame\Csv\Doctrine\Collection\Bridge\Records;
+use Bakame\Csv\Extension\RecordCollection;
 use Countable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -26,7 +26,7 @@ use League\Csv\Statement;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class RecordsTest extends TestCase
+class RecordCollectionTest extends TestCase
 {
     protected $csv;
 
@@ -39,7 +39,7 @@ class RecordsTest extends TestCase
 
     public function testConstructorWithReader()
     {
-        $collection = new Records($this->csv);
+        $collection = new RecordCollection($this->csv);
         self::assertInstanceOf(Collection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
@@ -54,7 +54,7 @@ class RecordsTest extends TestCase
             ->limit(15)
         ;
         $result = $stmt->process($this->csv);
-        $collection = new Records($result);
+        $collection = new RecordCollection($result);
         self::assertInstanceOf(Collection::class, $collection);
         self::assertInstanceOf(IteratorAggregate::class, $collection);
         self::assertInstanceOf(Countable::class, $collection);
@@ -65,7 +65,7 @@ class RecordsTest extends TestCase
     public function testConstructorThrowsTypeError()
     {
         self::expectException(TypeError::class);
-        new Records([]);
+        new RecordCollection([]);
     }
 
     public function testDoInitialize()
@@ -76,7 +76,7 @@ class RecordsTest extends TestCase
         ;
         $result = $stmt->process($this->csv);
 
-        $collection = new Records($result);
+        $collection = new RecordCollection($result);
         self::assertCount(15, $collection);
     }
 
@@ -86,7 +86,7 @@ class RecordsTest extends TestCase
         fputcsv($fp, ['foo', 'bar', 'baz']);
         fputcsv($fp, ['foofoo', 'barbar', 'bazbaz']);
         $csv = Reader::createFromStream($fp);
-        $collection = new Records($csv);
+        $collection = new RecordCollection($csv);
 
         self::assertSame([
             ['foo', 'bar', 'baz'],

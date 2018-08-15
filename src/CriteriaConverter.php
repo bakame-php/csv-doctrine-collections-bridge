@@ -12,14 +12,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Bakame\Csv\Doctrine\Collection\Bridge;
+namespace Bakame\Csv\Extension;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 use League\Csv\Statement;
 use function array_reverse;
 
-final class Converter
+final class CriteriaConverter
 {
     /**
      * Returns the Statement object created from the current Criteria object.

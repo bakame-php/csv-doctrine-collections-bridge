@@ -13,10 +13,10 @@ This package contains:
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Collection\Bridge\Records;
+use Bakame\Csv\Extension\RecordCollection;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
+use function Bakame\Csv\Extension\criteria_convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -31,12 +31,12 @@ $criteria = Criteria::create()
 
 //you can do
 
-$resultset = convert($criteria)->process($csv);
-$result = new Records($resultset);
+$resultset = criteria_convert($criteria)->process($csv);
+$result = new RecordCollection($resultset);
 
 //or
 
-$collection = new Records($csv);
+$collection = new RecordCollection($csv);
 $result = $collection->matching($criteria);
 ```
 
@@ -62,14 +62,14 @@ Usage
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Collection\Bridge\Records;
+use Bakame\Csv\Extension\RecordCollection;
 use League\Csv\Reader;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
 $csv->setDelimiter(';');
 
-$collection = new Records($csv);
+$collection = new RecordCollection($csv);
 ```
 
 ### Converting a `League\Csv\ResultSet` into a Doctrine Collection object.
@@ -87,19 +87,19 @@ $stmt = (new Statement())
             && false !== strpos($row['email'], '@github.com');
     });
 
-$collection = new Records($stmt->process($csv));
+$collection = new RecordCollection($stmt->process($csv));
 ```
 
 ### Using Doctrine Criteria to filter a `League\Csv\Reader` object
 
-You can simply use the provided `Bakame\Csv\Doctrine\Collection\Bridge\convert` function to convert a `Doctrine\Common\Collections\Criteria` object into a `League\Csv\Statement` one.
+You can simply use the provided `Bakame\Csv\Extension\criteria_convert` function to convert a `Doctrine\Common\Collections\Criteria` object into a `League\Csv\Statement` one.
 
 ```php
 <?php
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
+use function Bakame\Csv\Extension\criteria_convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -112,13 +112,13 @@ $criteria = Criteria::create()
     ->setMaxResults(10)
 ;
 
-$stmt = convert($criteria);
+$stmt = criteria_convert($criteria);
 $resultset = $stmt->process($csv);
 ```
 
-### Converter advanced usages
+### CriteriaConverter advanced usages
 
-The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the `Converter::convert` method.
+The `Bakame\Csv\Extension\criteria_convert` function is an alias of the `CriteriaConverter::convert` method.
 
 ```php
 <?php
@@ -126,16 +126,16 @@ The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Statement;
 
-public static Converter::convert(Criteria $criteria, Statement $stmt = null): Statement
-public static Converter::addWhere(Criteria $criteria, Statement $stmt = null): Statement
-public static Converter::addOrderBy(Criteria $criteria, Statement $stmt = null): Statement
-public static Converter::addInterval(Criteria $criteria, Statement $stmt = null): Statement
+public static CriteriaConverter::convert(Criteria $criteria, Statement $stmt = null): Statement
+public static CriteriaConverter::addWhere(Criteria $criteria, Statement $stmt = null): Statement
+public static CriteriaConverter::addOrderBy(Criteria $criteria, Statement $stmt = null): Statement
+public static CriteriaConverter::addInterval(Criteria $criteria, Statement $stmt = null): Statement
 ```
 
-- `Converter::convert` converts the `Criteria` object into a `Statement` object.
-- `Converter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
-- `Converter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
-- `Converter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
+- `CriteriaConverter::convert` converts the `Criteria` object into a `Statement` object.
+- `CriteriaConverter::addWhere` adds the `Criteria::getWhereExpression` filters to the submitted `Statement` object.
+- `CriteriaConverter::addOrderBy` adds the `Criteria::getOrderings` filters to the submitted `Statement` object.
+- `CriteriaConverter::addInterval` adds the `Criteria::getFirstResult` and `Criteria::getMaxResults` filters to the submitted `Statement` object.
 
 **WARNING: While the `Criteria` object is mutable the `Statement` object is immutable. All returned `Statement` objects are new instances**
 
