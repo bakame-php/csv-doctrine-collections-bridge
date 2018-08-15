@@ -24,7 +24,6 @@ use TypeError;
 use function get_class;
 use function gettype;
 use function is_object;
-use function iterator_to_array;
 use function sprintf;
 
 final class Records extends AbstractLazyCollection implements Selectable
@@ -72,7 +71,10 @@ final class Records extends AbstractLazyCollection implements Selectable
      */
     protected function doInitialize(): void
     {
-        $this->collection = new ArrayCollection(iterator_to_array($this->csv, true));
+        $this->collection = new ArrayCollection();
+        foreach ($this->csv as $offset => $record) {
+            $this->collection[$offset] = $record;
+        }
         unset($this->csv);
     }
 

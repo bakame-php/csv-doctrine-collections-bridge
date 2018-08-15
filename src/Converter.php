@@ -28,11 +28,10 @@ final class Converter
      */
     public static function convert(Criteria $criteria, Statement $stmt = null): Statement
     {
-        $stmt = self::addWhere($criteria, $stmt ?? new Statement());
+        $stmt = self::addWhere($criteria, $stmt);
         $stmt = self::addOrderBy($criteria, $stmt);
-        $stmt = self::addInterval($criteria, $stmt);
 
-        return $stmt;
+        return self::addInterval($criteria, $stmt);
     }
 
     /**
@@ -66,7 +65,11 @@ final class Converter
     {
         $next = null;
         foreach (array_reverse($criteria->getOrderings()) as $field => $ordering) {
-            $next = ClosureExpressionVisitor::sortByField($field, $ordering === Criteria::DESC ? -1 : 1, $next);
+            $next = ClosureExpressionVisitor::sortByField(
+                $field,
+                $ordering === Criteria::DESC ? -1 : 1,
+                $next
+            );
         }
 
         $stmt = $stmt ?? new Statement();
