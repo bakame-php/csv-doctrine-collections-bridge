@@ -119,10 +119,10 @@ The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Statement;
 
-public static Converter::convert(Criteria $criteria, ?Statement $stmt = null): Statement
-public static Converter::addWhere(Criteria $criteria, Statement $stmt): Statement
-public static Converter::addOrderBy(Criteria $criteria, Statement $stmt): Statement
-public static Converter::addInterval(Criteria $criteria, Statement $stmt): Statement
+public static Converter::convert(Criteria $criteria, Statement $stmt = null): Statement
+public static Converter::addWhere(Criteria $criteria, Statement $stmt = null): Statement
+public static Converter::addOrderBy(Criteria $criteria, Statement $stmt = null): Statement
+public static Converter::addInterval(Criteria $criteria, Statement $stmt = null): Statement
 ```
 
 - `Converter::convert` converts the `Criteria` object into a `Statement` object.

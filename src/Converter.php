@@ -40,9 +40,12 @@ final class Converter
      *
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getWhereExpression filter.
+     *
+     * @param null|Statement $stmt
      */
-    public static function addWhere(Criteria $criteria, Statement $stmt): Statement
+    public static function addWhere(Criteria $criteria, Statement $stmt = null): Statement
     {
+        $stmt = $stmt ?? new Statement();
         $expr = $criteria->getWhereExpression();
         if (null === $expr) {
             return $stmt;
@@ -56,14 +59,17 @@ final class Converter
      *
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getOrderings filter.
+     *
+     * @param null|Statement $stmt
      */
-    public static function addOrderBy(Criteria $criteria, Statement $stmt): Statement
+    public static function addOrderBy(Criteria $criteria, Statement $stmt = null): Statement
     {
         $next = null;
         foreach (array_reverse($criteria->getOrderings()) as $field => $ordering) {
             $next = ClosureExpressionVisitor::sortByField($field, $ordering === Criteria::DESC ? -1 : 1, $next);
         }
 
+        $stmt = $stmt ?? new Statement();
         if (null === $next) {
             return $stmt;
         }
@@ -77,11 +83,14 @@ final class Converter
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getFirstResult
      * and Criteria::getMaxResults filters paramters.
+     *
+     * @param null|Statement $stmt
      */
-    public static function addInterval(Criteria $criteria, Statement $stmt): Statement
+    public static function addInterval(Criteria $criteria, Statement $stmt = null): Statement
     {
         $offset = $criteria->getFirstResult() ?? 0;
         $length = $criteria->getMaxResults() ?? -1;
+        $stmt = $stmt ?? new Statement();
 
         return $stmt->offset($offset)->limit($length);
     }
