@@ -2,6 +2,15 @@
     "name": "bakame/csv-doctrine-collection-bridge",
     "type": "library",
     "description" : "Csv Doctrine Collection bridge using League\\Csv",
+    "license": "MIT",
+    "homepage": "https://github.com/bakame-php/csv-doctrine-collections-bridge",
+    "authors": [
+        {
+            "name" : "Ignace Nyamagana Butera",
+            "email" : "nyamsprod@gmail.com",
+            "homepage" : "https://nyamsprod.com"
+        }
+    ],
     "keywords": [
         "csv",
         "collections",
@@ -47,5 +56,13 @@
             "@phpstan-src",
             "@phpstan-tests"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
