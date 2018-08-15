@@ -23,7 +23,7 @@
     },
     "autoload": {
     	"psr-4": {
-    		"Bakame\\Csv\\Doctrine\\Bridge\\" : "src"
+    		"Bakame\\Csv\\Doctrine\\Collection\\Bridge\\" : "src"
     	},
         "files": ["src/functions_include.php"]
     },

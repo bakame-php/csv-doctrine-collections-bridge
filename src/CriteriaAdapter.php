@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bakame\Csv\Doctrine\Bridge;
+namespace Bakame\Csv\Doctrine\Collection\Bridge;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
@@ -23,6 +23,7 @@ final class CriteriaAdapter
 {
     /**
      * Returns the Statement object created from the current Criteria object.
+     *
      * @param null|Statement $stmt
      */
     public static function convert(Criteria $criteria, Statement $stmt = null): Statement

@@ -6,10 +6,10 @@ This package contains classes to convert [League Csv](https://csv.thephpleague.c
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Doctrine\Bridge\convert;
+use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -55,7 +55,7 @@ Usage
 ```php
 <?php
 
-use Bakame\Csv\Doctrine\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
 use League\Csv\Reader;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
@@ -85,14 +85,14 @@ $collection = new Collection($stmt->process($csv));
 
 ### Using Doctrine Criteria to filter a `League\Csv\Reader` object
 
-You can simply use the provided `Bakame\Csv\Doctrine\Bridge\convert` function to convert a `Doctrine\Common\Collections\Criteria` object into a `League\Csv\Statement` one.
+You can simply use the provided `Bakame\Csv\Doctrine\Collection\Bridge\convert` function to convert a `Doctrine\Common\Collections\Criteria` object into a `League\Csv\Statement` one.
 
 ```php
 <?php
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Doctrine\Bridge\convert;
+use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -111,7 +111,7 @@ $resultset = $stmt->process($csv);
 
 ### CriteriaAdapter advanced usages
 
-The `Bakame\Csv\Doctrine\Bridge\convert` function is an alias of the `CriteriaAdapter::convert` method.
+The `Bakame\Csv\Doctrine\Collection\Bridge\convert` function is an alias of the `CriteriaAdapter::convert` method.
 
 ```php
 <?php

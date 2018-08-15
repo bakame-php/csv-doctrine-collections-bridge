@@ -15,7 +15,7 @@
 namespace BakameTest\Csv\Doctrine\Bridge;
 
 use ArrayAccess;
-use Bakame\Csv\Doctrine\Bridge\Collection;
+use Bakame\Csv\Doctrine\Collection\Bridge\Collection;
 use Countable;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use Doctrine\Common\Collections\Criteria;

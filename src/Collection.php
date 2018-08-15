@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bakame\Csv\Doctrine\Bridge;
+namespace Bakame\Csv\Doctrine\Collection\Bridge;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -73,6 +73,7 @@ final class Collection extends AbstractLazyCollection implements Selectable
     protected function doInitialize(): void
     {
         $this->collection = new ArrayCollection(iterator_to_array($this->csv, true));
+        unset($this->csv);
     }
 
     /**

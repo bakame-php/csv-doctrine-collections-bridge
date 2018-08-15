@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Expr\Comparison;
 use League\Csv\Reader;
 use League\Csv\ResultSet;
 use PHPUnit\Framework\TestCase;
-use function Bakame\Csv\Doctrine\Bridge\convert;
+use function Bakame\Csv\Doctrine\Collection\Bridge\convert;
 
 class CriteriaAdapterTest extends TestCase
 {

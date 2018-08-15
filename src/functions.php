@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Bakame\Csv\Doctrine\Bridge;
+namespace Bakame\Csv\Doctrine\Collection\Bridge;
 
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Statement;
