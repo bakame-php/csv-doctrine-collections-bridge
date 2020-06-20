@@ -16,7 +16,7 @@ All Notable changes to CSV doctrine collections bridge will be documented in thi
 
 - None
 
-## Removed
+### Removed
 
 - `PHP7.1` support
 - `League\Csv 9.5` support
