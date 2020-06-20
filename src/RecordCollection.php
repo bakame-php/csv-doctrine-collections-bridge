@@ -1,7 +1,7 @@
 <?php
 
 /**
- * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge).
+ * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge)
  *
  * @author  Ignace Nyamagana Butera <nyamsprod@gmail.com>
  * @license https://github.com/bakame-php/csv-doctrine-bridge/blob/master/LICENSE (MIT License)
@@ -18,52 +18,18 @@ use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
-use League\Csv\Reader;
-use League\Csv\ResultSet;
-use TypeError;
-use function get_class;
-use function gettype;
-use function is_object;
-use function sprintf;
+use League\Csv\TabularDataReader;
 
 final class RecordCollection extends AbstractLazyCollection implements Selectable
 {
     /**
-     * @var Reader|ResultSet
+     * @var TabularDataReader
      */
-    private $csv;
+    private $tabularDataReader;
 
-    /**
-     * @param Reader|ResultSet $csv
-     */
-    public function __construct($csv)
+    public function __construct(TabularDataReader $tabularDataReader)
     {
-        $this->csv = $this->filterInput($csv);
-    }
-
-    /**
-     * Filter the csv object.
-     *
-     * @throws TypeError if the input is not a League\Csv object
-     *
-     * @return Reader|ResultSet
-     */
-    private function filterInput($input)
-    {
-        if ($input instanceof Reader) {
-            return $input;
-        }
-
-        if ($input instanceof ResultSet) {
-            return $input;
-        }
-
-        throw new TypeError(sprintf(
-            'expected csv to be a %s or a % object, but received %s instead',
-            Reader::class,
-            ResultSet::class,
-            is_object($input) ? get_class($input) : gettype($input)
-        ));
+        $this->tabularDataReader = $tabularDataReader;
     }
 
     /**
@@ -72,19 +38,25 @@ final class RecordCollection extends AbstractLazyCollection implements Selectabl
     protected function doInitialize(): void
     {
         $this->collection = new ArrayCollection();
-        foreach ($this->csv as $offset => $record) {
+        foreach ($this->tabularDataReader as $offset => $record) {
             $this->collection[$offset] = $record;
         }
-        unset($this->csv);
+        unset($this->tabularDataReader);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function matching(Criteria $criteria)
+    public function matching(Criteria $criteria): ArrayCollection
     {
         $this->initialize();
 
-        return $this->collection->matching($criteria);
+        /** @var ArrayCollection $collection */
+        $collection = $this->collection;
+
+        /** @var ArrayCollection $newCollection */
+        $newCollection = $collection->matching($criteria);
+
+        return $newCollection;
     }
 }

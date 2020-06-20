@@ -1,7 +1,7 @@
 <?php
 
 /**
- * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge).
+ * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge)
  *
  * @author  Ignace Nyamagana Butera <nyamsprod@gmail.com>
  * @license https://github.com/bakame-php/csv-doctrine-bridge/blob/master/LICENSE (MIT License)
@@ -24,7 +24,6 @@ use League\Csv\Statement;
  *
  * @see CriteriaConverter::convert
  *
- * @param null|Statement $stmt
  */
 function criteria_convert(Criteria $criteria, Statement $stmt = null): Statement
 {

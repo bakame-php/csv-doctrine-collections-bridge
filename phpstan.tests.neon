@@ -1,7 +1,0 @@
-includes:
-- vendor/phpstan/phpstan-phpunit/extension.neon
-- vendor/phpstan/phpstan-phpunit/rules.neon
-parameters:
-    ignoreErrors:
-        -'#Parameter \#1 $csv of class Bakame\\Csv\\Extension\\RecordCollection constructor expects League\\Csv\\Reader|League\\Csv\\ResultSet, array given.#'
-    reportUnmatchedIgnoredErrors: true

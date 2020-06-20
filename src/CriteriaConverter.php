@@ -1,7 +1,7 @@
 <?php
 
 /**
- * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge).
+ * League CSV Doctrine Collection Bridge (https://github.com/bakame-php/csv-doctrine-bridge)
  *
  * @author  Ignace Nyamagana Butera <nyamsprod@gmail.com>
  * @license https://github.com/bakame-php/csv-doctrine-bridge/blob/master/LICENSE (MIT License)
@@ -14,17 +14,16 @@
 
 namespace Bakame\Csv\Extension;
 
+use function array_reverse;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 use League\Csv\Statement;
-use function array_reverse;
 
 final class CriteriaConverter
 {
     /**
      * Returns the Statement object created from the current Criteria object.
      *
-     * @param null|Statement $stmt
      */
     public static function convert(Criteria $criteria, Statement $stmt = null): Statement
     {
@@ -40,7 +39,6 @@ final class CriteriaConverter
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getWhereExpression filter.
      *
-     * @param null|Statement $stmt
      */
     public static function addWhere(Criteria $criteria, Statement $stmt = null): Statement
     {
@@ -59,7 +57,6 @@ final class CriteriaConverter
      * This method MUST retain the state of the Statement instance, and return
      * an new Statement instance with the added Criteria::getOrderings filter.
      *
-     * @param null|Statement $stmt
      */
     public static function addOrderBy(Criteria $criteria, Statement $stmt = null): Statement
     {
@@ -87,7 +84,6 @@ final class CriteriaConverter
      * an new Statement instance with the added Criteria::getFirstResult
      * and Criteria::getMaxResults filters paramters.
      *
-     * @param null|Statement $stmt
      */
     public static function addInterval(Criteria $criteria, Statement $stmt = null): Statement
     {

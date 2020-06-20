@@ -10,3 +10,12 @@ trim_trailing_whitespace = true
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.css]
+indent_size = 2
+
+[*.js]
+indent_size = 2
+
+[*.xml]
+indent_size = 2

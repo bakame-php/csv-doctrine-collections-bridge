@@ -45,7 +45,7 @@ System Requirements
 
 You need:
 
-- **PHP >= 7.1** but the latest stable version of PHP is recommended.
+- At least **League/Csv 9.6 and PHP7.2** but the latest stable version of each dependency is recommended.
 
 Installation
 --------
