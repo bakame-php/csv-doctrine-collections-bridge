@@ -51,7 +51,7 @@ Installation
 --------
 
 ```bash
-$ composer require bakame/league-csv-doctrine-bridge
+$ composer require bakame/csv-doctrine-collection-bridge
 ```
 
 Usage
