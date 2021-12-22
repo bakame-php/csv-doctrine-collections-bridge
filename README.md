@@ -24,7 +24,7 @@ $csv->setDelimiter(';');
 
 $criteria = Criteria::create()
     ->andWhere(Criteria::expr()->eq('prenom', 'Adam'))
-    ->orderBy(['annee', 'ASC'])
+    ->orderBy( [ 'annee' => 'ASC', 'foo' => 'desc', ] )
     ->setFirstResult(0)
     ->setMaxResults(10)
 ;
