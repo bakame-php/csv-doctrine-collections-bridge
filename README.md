@@ -13,10 +13,9 @@ This package contains:
 ```php
 <?php
 
-use Bakame\Csv\Extension\RecordCollection;
+use Bakame\Csv\Extension as CsvExtension;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Extension\criteria_convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -31,21 +30,22 @@ $criteria = Criteria::create()
 
 //you can do
 
-$resultset = criteria_convert($criteria)->process($csv);
-$result = new RecordCollection($resultset);
+$resultset = CsvExtension\CriteriaConverter::convert($criteria)->process($csv);
+$result = new CsvExtension\RecordCollection($resultset);
 
 //or
 
-$collection = new RecordCollection($csv);
+$collection = new CsvExtension\RecordCollection($csv);
 $result = $collection->matching($criteria);
 ```
 
 System Requirements
 -------
 
-You need:
+- **league/csv >= 9.6** 
+- **doctrine/collection >= 1.6.0**
 
-- At least **League/Csv 9.6 and PHP7.2** but the latest stable version of each dependency is recommended.
+but the latest stable version of each dependency is recommended.
 
 Installation
 --------
@@ -97,9 +97,9 @@ You can simply use the provided `Bakame\Csv\Extension\criteria_convert` function
 ```php
 <?php
 
+use Bakame\Csv\Extension\CriteriaConverter;
 use Doctrine\Common\Collections\Criteria;
 use League\Csv\Reader;
-use function Bakame\Csv\Extension\criteria_convert;
 
 $csv = Reader::createFromPath('/path/to/my/file.csv');
 $csv->setHeaderOffset(0);
@@ -112,13 +112,11 @@ $criteria = Criteria::create()
     ->setMaxResults(10)
 ;
 
-$stmt = criteria_convert($criteria);
+$stmt = CriteriaConverter::convert($criteria);
 $resultset = $stmt->process($csv);
 ```
 
 ### CriteriaConverter advanced usages
-
-The `Bakame\Csv\Extension\criteria_convert` function is an alias of the `CriteriaConverter::convert` method.
 
 ```php
 <?php
